@@ -47,35 +47,38 @@ document.addEventListener('DOMContentLoaded', () => {
   // Services strip tooltip
   const stripPills = document.querySelectorAll('.strip-pill');
   const stripTooltip = document.getElementById('strip-tooltip');
+  const stripContainer = document.querySelector('.services-strip');
   
-  stripPills.forEach((pill) => {
-    pill.addEventListener('mouseenter', (e) => {
-      const info = pill.dataset.info;
-      if (!info) return;
-      
-      stripTooltip.textContent = info;
-      stripTooltip.classList.add('visible');
-      
-      // Position tooltip below the pill with more spacing
-      const rect = pill.getBoundingClientRect();
-      const tooltipRect = stripTooltip.getBoundingClientRect();
-      
-      let left = rect.left + rect.width / 2 - tooltipRect.width / 2;
-      const top = rect.bottom + window.scrollY + 20;
-      
-      // Keep tooltip within viewport
-      const maxLeft = window.innerWidth - tooltipRect.width - 20;
-      if (left < 20) left = 20;
-      if (left > maxLeft) left = maxLeft;
-      
-      stripTooltip.style.left = `${left}px`;
-      stripTooltip.style.top = `${top}px`;
+  if (stripTooltip && stripContainer && stripPills.length) {
+    stripPills.forEach((pill) => {
+      pill.addEventListener('mouseenter', () => {
+        const info = pill.dataset.info;
+        if (!info) return;
+
+        stripTooltip.textContent = info;
+        stripTooltip.classList.add('visible');
+
+        // Position tooltip just below the strip, aligned to the hovered pill
+        const pillRect = pill.getBoundingClientRect();
+        const stripRect = stripContainer.getBoundingClientRect();
+        const tooltipRect = stripTooltip.getBoundingClientRect();
+
+        let left = pillRect.left + pillRect.width / 2 - tooltipRect.width / 2;
+        const top = stripRect.bottom + window.scrollY + 10; // between strip and About image
+
+        const maxLeft = window.innerWidth - tooltipRect.width - 20;
+        if (left < 20) left = 20;
+        if (left > maxLeft) left = maxLeft;
+
+        stripTooltip.style.left = `${left}px`;
+        stripTooltip.style.top = `${top}px`;
+      });
+
+      pill.addEventListener('mouseleave', () => {
+        stripTooltip.classList.remove('visible');
+      });
     });
-    
-    pill.addEventListener('mouseleave', () => {
-      stripTooltip.classList.remove('visible');
-    });
-  });
+  }
 
   // Portfolio filtering
   filterButtons.forEach((btn) => {
