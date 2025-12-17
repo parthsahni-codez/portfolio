@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalTitle = document.getElementById('modal-title');
   const modalDesc = document.getElementById('modal-desc');
   const modalClose = document.querySelector('.modal-close');
-  const bookingForm = document.getElementById('booking-form');
   const bgCanvas = document.getElementById('bg-canvas');
 
   // Smooth scroll for nav and in-page anchors
@@ -161,43 +160,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Simple hero load animation
   document.body.classList.add('page-loaded');
 
-  // Booking form -> Google Calendar create link
-  if (bookingForm) {
-    bookingForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const formData = new FormData(bookingForm);
-      const name = formData.get('name') || 'Meeting';
-      const email = formData.get('email') || '';
-      const date = formData.get('date');
-      const time = formData.get('time');
-      const duration = parseInt(formData.get('duration') || '30', 10);
-      const type = formData.get('type') || 'Meeting';
-      const notes = formData.get('notes') || '';
-
-      if (!date || !time) return;
-
-      // Build start/end in UTC for Google Calendar URL
-      const startLocal = new Date(`${date}T${time}`);
-      const endLocal = new Date(startLocal.getTime() + duration * 60000);
-      const formatForCalendar = (d) =>
-        d
-          .toISOString()
-          .replace(/[-:]/g, '')
-          .split('.')[0] + 'Z';
-
-      const startStr = formatForCalendar(startLocal);
-      const endStr = formatForCalendar(endLocal);
-
-      const title = encodeURIComponent(`${type} with Parth – ${name}`);
-      const details = encodeURIComponent(
-        `Requested by: ${name} (${email})\nType: ${type}\nNotes: ${notes}`
-      );
-      const location = encodeURIComponent('Google Meet (set a link)');
-
-      const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${location}&dates=${startStr}/${endStr}`;
-      window.open(url, '_blank', 'noopener');
-    });
-  }
 
   // Animated background (soft shooting stars)
   if (bgCanvas) {
