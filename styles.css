@@ -710,30 +710,33 @@ a {
   justify-content: center;
 }
 
-.social-btn {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.04);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.social-link {
   color: var(--text);
-  transition: transform var(--transition), box-shadow var(--transition), background var(--transition), border-color var(--transition);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color var(--transition), transform var(--transition);
+  position: relative;
 }
 
-.social-btn:hover {
-  transform: translateY(-2px) scale(1.03);
-  background: linear-gradient(135deg, rgba(192, 108, 255, 0.35), rgba(106, 110, 255, 0.35));
-  border-color: rgba(165, 91, 255, 0.6);
-  box-shadow: 0 10px 24px rgba(165, 91, 255, 0.25);
+.social-link:hover {
+  color: var(--accent);
+  transform: translateY(-2px);
 }
 
-.social-icon-img {
-  width: 18px;
-  height: 18px;
-  object-fit: contain;
+.social-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width var(--transition);
+}
+
+.social-link:hover::after {
+  width: 100%;
 }
 
 .copyright {
