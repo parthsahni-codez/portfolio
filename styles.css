@@ -1187,17 +1187,19 @@ button {
     grid-template-columns: 1fr;
     gap: 40px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
   }
   
   .hero-left {
-    order: 1;
+    order: 2;
     z-index: 10;
   }
   
   .hero-right {
-    order: 2;
+    order: 1;
     z-index: 1;
-    margin-top: 0;
+    margin-bottom: 20px;
   }
   
   .photo-container {
