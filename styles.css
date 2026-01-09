@@ -57,6 +57,21 @@ img {
   max-width: 100%;
   display: block;
   height: auto;
+  object-fit: cover;
+}
+
+/* Prevent image overflow on mobile */
+@media (max-width: 768px) {
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .project-image img {
+    width: 100%;
+    height: auto;
+    max-height: 300px;
+  }
 }
 
 a {
@@ -401,6 +416,8 @@ button {
   border-radius: var(--radius-2xl);
   box-shadow: var(--shadow-lg);
   overflow: hidden;
+  width: 100%;
+  aspect-ratio: 1;
 }
 
 .photo-hex::before {
@@ -421,6 +438,7 @@ button {
   height: 100%;
   object-fit: cover;
   border-radius: calc(var(--radius-2xl) - 8px);
+  display: block;
 }
 
 .floating-card {
@@ -482,13 +500,18 @@ button {
   border-radius: 50%;
   box-shadow: var(--shadow);
   max-width: 400px;
+  width: 100%;
   margin: 0 auto;
+  aspect-ratio: 1;
 }
 
 .about-photo img {
   border-radius: 50%;
   object-fit: cover;
   aspect-ratio: 1;
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .about-text h2 {
@@ -740,6 +763,14 @@ button {
   overflow: hidden;
   aspect-ratio: 16 / 10;
   background: var(--bg-alt);
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .project-image {
+    aspect-ratio: 4 / 3;
+    max-height: 300px;
+  }
 }
 
 .project-image img {
@@ -1135,11 +1166,11 @@ button {
 
 @media (max-width: 768px) {
   .section {
-    padding: 60px 6vw;
+    padding: 60px 5vw;
   }
   
   .navbar {
-    padding: 16px 6vw;
+    padding: 14px 5vw;
   }
   
   .nav-links {
@@ -1147,34 +1178,87 @@ button {
   }
   
   .hero {
-    padding-top: 60px;
+    padding-top: 40px;
+    padding-bottom: 60px;
     min-height: auto;
+  }
+  
+  .hero-content {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+  
+  .hero-left {
+    order: 1;
+    z-index: 10;
+  }
+  
+  .hero-right {
+    order: 2;
+    z-index: 1;
+    margin-top: 0;
+  }
+  
+  .photo-container {
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  .photo-hex {
+    max-width: 320px;
+    margin: 0 auto;
   }
   
   .floating-card {
     display: none;
   }
   
+  .about-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    text-align: center;
+  }
+  
+  .about-photo {
+    max-width: 280px;
+    margin: 0 auto;
+  }
+  
   .skills-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
   
   .services-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
   
   .projects-grid {
     grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .project-card.enhanced {
+    margin: 0;
+  }
+  
+  .contact-wrapper {
+    grid-template-columns: 1fr;
+    gap: 30px;
   }
   
   .footer-content {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 30px;
+    text-align: center;
   }
   
   .footer-links {
     grid-template-columns: 1fr;
-    gap: 30px;
+    gap: 24px;
   }
   
   .footer-bottom {
@@ -1184,13 +1268,43 @@ button {
   }
   
   .contact-form {
-    padding: 24px;
+    padding: 20px;
+  }
+  
+  /* Disable heavy animations on mobile */
+  .bg-canvas {
+    display: none;
+  }
+  
+  .bg-gradients::before,
+  .bg-gradients::after {
+    opacity: 0.15;
   }
 }
 
 @media (max-width: 480px) {
+  .section {
+    padding: 50px 4vw;
+  }
+  
+  .navbar {
+    padding: 12px 4vw;
+  }
+  
+  .hero {
+    padding-top: 30px;
+    padding-bottom: 50px;
+  }
+  
   .hero-title {
-    font-size: 2rem;
+    font-size: 1.75rem;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: 20px;
   }
   
   .btn {
@@ -1201,9 +1315,44 @@ button {
   .hero-actions {
     flex-direction: column;
     width: 100%;
+    gap: 10px;
   }
   
   .hero-actions .btn {
     width: 100%;
+  }
+  
+  .photo-hex {
+    max-width: 280px;
+  }
+  
+  .about-photo {
+    max-width: 240px;
+  }
+  
+  .section-header h2 {
+    font-size: 1.75rem;
+  }
+  
+  .skill-card {
+    padding: 20px;
+  }
+  
+  .service-card {
+    padding: 24px;
+  }
+  
+  .project-content {
+    padding: 20px;
+  }
+  
+  .contact-form {
+    padding: 16px;
+  }
+  
+  /* Further reduce animations */
+  * {
+    animation-duration: 0.3s !important;
+    transition-duration: 0.2s !important;
   }
 }

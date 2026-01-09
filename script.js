@@ -151,15 +151,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   // ======================
-  // Animated Background Canvas
+  // Animated Background Canvas (Disabled on mobile for performance)
   // ======================
   const bgCanvas = document.getElementById('bg-canvas');
+  const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   
-  if (bgCanvas) {
+  if (bgCanvas && !isMobile) {
     const ctx = bgCanvas.getContext('2d');
     let particles = [];
-    const particleCount = 60;
-    const dpr = window.devicePixelRatio || 1;
+    const particleCount = 40; // Reduced for better performance
+    const dpr = Math.min(window.devicePixelRatio || 1, 2); // Limit DPR for performance
     let w, h;
     
     const resize = () => {
@@ -215,15 +216,16 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     const connectParticles = () => {
+      // Optimized: only connect nearby particles
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
+          const distance = dx * dx + dy * dy; // Use squared distance to avoid sqrt
           
-          if (distance < 150) {
+          if (distance < 22500) { // 150^2
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(139, 92, 246, ${0.1 * (1 - distance / 150)})`;
+            ctx.strokeStyle = `rgba(139, 92, 246, ${0.08 * (1 - Math.sqrt(distance) / 150)})`;
             ctx.lineWidth = 1;
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
@@ -258,37 +260,51 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   // ======================
-  // Parallax Effect on Hero (Fixed to prevent overlap)
+  // Parallax Effect on Hero (Disabled on mobile for performance)
   // ======================
   const hero = document.querySelector('.hero');
   const heroContent = document.querySelector('.hero-content');
   const heroLeft = document.querySelector('.hero-left');
   const heroRight = document.querySelector('.hero-right');
   
-  if (hero && heroContent && heroLeft && heroRight) {
+  if (hero && heroContent && heroLeft && heroRight && !isMobile) {
+    let ticking = false;
+    
     window.addEventListener('scroll', () => {
-      const scrolled = window.pageYOffset;
-      const heroHeight = hero.offsetHeight;
-      
-      if (scrolled <= heroHeight) {
-        // Subtle parallax only on the right side (photo)
-        const rate = scrolled * 0.3;
-        heroRight.style.transform = `translateY(${rate}px)`;
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrolled = window.pageYOffset;
+          const heroHeight = hero.offsetHeight;
+          
+          if (scrolled <= heroHeight) {
+            // Subtle parallax only on the right side (photo)
+            const rate = scrolled * 0.2; // Reduced for smoother performance
+            heroRight.style.transform = `translateY(${rate}px)`;
+            
+            // Keep left side (text) fixed to prevent overlap
+            heroLeft.style.transform = 'translateY(0)';
+            heroLeft.style.position = 'relative';
+            heroLeft.style.zIndex = '10';
+          } else {
+            heroRight.style.transform = 'translateY(0)';
+          }
+          
+          ticking = false;
+        });
         
-        // Keep left side (text) fixed to prevent overlap
-        heroLeft.style.transform = 'translateY(0)';
-        heroLeft.style.position = 'relative';
-        heroLeft.style.zIndex = '10';
-      } else {
-        heroRight.style.transform = 'translateY(0)';
+        ticking = true;
       }
     });
+  } else if (heroLeft && heroRight) {
+    // On mobile, ensure no transforms
+    heroLeft.style.transform = 'none';
+    heroRight.style.transform = 'none';
   }
   
   // ======================
-  // Cursor Effect (Desktop only)
+  // Cursor Effect (Desktop only - disabled on mobile)
   // ======================
-  if (window.innerWidth > 768) {
+  if (!isMobile && window.innerWidth > 768) {
     const cursor = document.createElement('div');
     cursor.style.cssText = `
       position: fixed;
