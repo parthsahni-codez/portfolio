@@ -359,7 +359,7 @@ button {
   font-size: 1.15rem;
   color: var(--text-secondary);
   line-height: 1.7;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   max-width: 580px;
 }
 
@@ -368,38 +368,11 @@ button {
   font-weight: 600;
 }
 
-.hero-stats {
-  display: flex;
-  gap: 32px;
-  margin: 32px 0;
-  padding: 24px 0;
-  border-top: 1px solid var(--border-light);
-  border-bottom: 1px solid var(--border-light);
-}
-
-.hero-stat-item {
-  text-align: center;
-}
-
-.stat-value {
-  font-family: var(--font-display);
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--accent-light);
-  line-height: 1;
-}
-
-.stat-label {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-top: 4px;
-}
-
 .hero-actions {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-  margin-top: 32px;
+  margin-top: 24px;
 }
 
 .photo-container {
@@ -407,6 +380,7 @@ button {
   width: 100%;
   max-width: 480px;
   margin: 0 auto;
+  z-index: 1;
 }
 
 .photo-hex {
@@ -1147,10 +1121,6 @@ button {
     margin-right: auto;
   }
   
-  .hero-stats {
-    justify-content: center;
-  }
-  
   .hero-actions {
     justify-content: center;
   }
@@ -1187,11 +1157,6 @@ button {
   .hero {
     padding-top: 60px;
     min-height: auto;
-  }
-  
-  .hero-stats {
-    gap: 20px;
-    flex-wrap: wrap;
   }
   
   .floating-card {

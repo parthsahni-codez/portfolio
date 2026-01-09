@@ -258,22 +258,22 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   // ======================
-  // Parallax Effect on Hero
+  // Parallax Effect on Hero (Disabled to prevent overlap)
   // ======================
-  const hero = document.querySelector('.hero');
-  const heroContent = document.querySelector('.hero-content');
+  // const hero = document.querySelector('.hero');
+  // const heroContent = document.querySelector('.hero-content');
   
-  if (hero && heroContent) {
-    window.addEventListener('scroll', () => {
-      const scrolled = window.pageYOffset;
-      const rate = scrolled * 0.5;
+  // if (hero && heroContent) {
+  //   window.addEventListener('scroll', () => {
+  //     const scrolled = window.pageYOffset;
+  //     const rate = scrolled * 0.5;
       
-      if (scrolled <= hero.offsetHeight) {
-        heroContent.style.transform = `translateY(${rate}px)`;
-        heroContent.style.opacity = 1 - (scrolled / hero.offsetHeight) * 0.5;
-      }
-    });
-  }
+  //     if (scrolled <= hero.offsetHeight) {
+  //       heroContent.style.transform = `translateY(${rate}px)`;
+  //       heroContent.style.opacity = 1 - (scrolled / hero.offsetHeight) * 0.5;
+  //     }
+  //   });
+  // }
   
   // ======================
   // Cursor Effect (Desktop only)
