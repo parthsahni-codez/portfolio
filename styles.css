@@ -309,6 +309,17 @@ button {
   align-items: center;
   max-width: 1400px;
   margin: 0 auto;
+  position: relative;
+}
+
+.hero-left {
+  position: relative;
+  z-index: 10;
+}
+
+.hero-right {
+  position: relative;
+  z-index: 1;
 }
 
 .pill {
@@ -601,28 +612,8 @@ button {
 .skill-info h4 {
   font-size: 1.05rem;
   font-weight: 600;
-  margin-bottom: 8px;
+  margin: 0;
   color: var(--text);
-}
-
-.skill-bar {
-  height: 6px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: var(--radius-pill);
-  overflow: hidden;
-  margin-bottom: 6px;
-}
-
-.skill-progress {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--accent-light));
-  border-radius: var(--radius-pill);
-  transition: width 1s ease;
-}
-
-.skill-level {
-  font-size: 0.85rem;
-  color: var(--text-muted);
 }
 
 .skills-tags {
@@ -1053,11 +1044,12 @@ button {
 .footer-bottom {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding-top: 30px;
   border-top: 1px solid var(--border-light);
   color: var(--text-muted);
   font-size: 0.9rem;
+  text-align: center;
 }
 
 .heart {

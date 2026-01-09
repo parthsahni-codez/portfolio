@@ -258,22 +258,32 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   // ======================
-  // Parallax Effect on Hero (Disabled to prevent overlap)
+  // Parallax Effect on Hero (Fixed to prevent overlap)
   // ======================
-  // const hero = document.querySelector('.hero');
-  // const heroContent = document.querySelector('.hero-content');
+  const hero = document.querySelector('.hero');
+  const heroContent = document.querySelector('.hero-content');
+  const heroLeft = document.querySelector('.hero-left');
+  const heroRight = document.querySelector('.hero-right');
   
-  // if (hero && heroContent) {
-  //   window.addEventListener('scroll', () => {
-  //     const scrolled = window.pageYOffset;
-  //     const rate = scrolled * 0.5;
+  if (hero && heroContent && heroLeft && heroRight) {
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      const heroHeight = hero.offsetHeight;
       
-  //     if (scrolled <= hero.offsetHeight) {
-  //       heroContent.style.transform = `translateY(${rate}px)`;
-  //       heroContent.style.opacity = 1 - (scrolled / hero.offsetHeight) * 0.5;
-  //     }
-  //   });
-  // }
+      if (scrolled <= heroHeight) {
+        // Subtle parallax only on the right side (photo)
+        const rate = scrolled * 0.3;
+        heroRight.style.transform = `translateY(${rate}px)`;
+        
+        // Keep left side (text) fixed to prevent overlap
+        heroLeft.style.transform = 'translateY(0)';
+        heroLeft.style.position = 'relative';
+        heroLeft.style.zIndex = '10';
+      } else {
+        heroRight.style.transform = 'translateY(0)';
+      }
+    });
+  }
   
   // ======================
   // Cursor Effect (Desktop only)

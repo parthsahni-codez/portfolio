@@ -312,3 +312,5 @@ Your portfolio is now professional, modern, and optimized for recruiters and cli
 *Last Updated: January 2025*
 *Designed & Developed by Parth Sahni*
 
+
+
