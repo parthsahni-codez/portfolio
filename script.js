@@ -86,12 +86,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const contactForm = document.getElementById('contact-form');
   
   if (contactForm) {
+    // Configure your Formspree form ID here (create a free form at https://formspree.io)
+    // Example: const FORMSPREE_FORM_ID = 'mknqzqdo';
+    const FORMSPREE_FORM_ID = 'YOUR_FORMSPREE_FORM_ID';
+
     contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+
       const submitBtn = contactForm.querySelector('button[type="submit"]');
       const originalText = submitBtn.innerHTML;
-      
+
       // Disable button and show loading state
       submitBtn.disabled = true;
       submitBtn.innerHTML = `
@@ -101,51 +105,77 @@ document.addEventListener('DOMContentLoaded', () => {
         </svg>
         Sending...
       `;
-      
-      // Get form data
+
       const formData = new FormData(contactForm);
       const data = Object.fromEntries(formData);
-      
-      // Simulate form submission (replace with actual API call)
+
+      // Helper to show feedback and reset button
+      const showResult = (success, message) => {
+        if (success) {
+          submitBtn.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            ${message}
+          `;
+          submitBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+          contactForm.reset();
+        } else {
+          submitBtn.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="15" y1="9" x2="9" y2="15"></line>
+              <line x1="9" y1="9" x2="15" y2="15"></line>
+            </svg>
+            ${message}
+          `;
+          submitBtn.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+        }
+
+        setTimeout(() => {
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+          submitBtn.style.background = '';
+        }, 3500);
+      };
+
       try {
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        
-        // Show success message
-        submitBtn.innerHTML = `
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
-          Message Sent!
-        `;
-        submitBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
-        
-        // Reset form
-        contactForm.reset();
-        
-        // Reset button after 3 seconds
-        setTimeout(() => {
-          submitBtn.innerHTML = originalText;
-          submitBtn.disabled = false;
-          submitBtn.style.background = '';
-        }, 3000);
-        
-      } catch (error) {
-        // Show error message
-        submitBtn.innerHTML = `
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="15" y1="9" x2="9" y2="15"></line>
-            <line x1="9" y1="9" x2="15" y2="15"></line>
-          </svg>
-          Failed to Send
-        `;
-        submitBtn.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
-        
-        setTimeout(() => {
-          submitBtn.innerHTML = originalText;
-          submitBtn.disabled = false;
-          submitBtn.style.background = '';
-        }, 3000);
+        if (FORMSPREE_FORM_ID && FORMSPREE_FORM_ID !== 'YOUR_FORMSPREE_FORM_ID') {
+          // Send to Formspree (recommended)
+          const url = `https://formspree.io/f/${FORMSPREE_FORM_ID}`;
+          const res = await fetch(url, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              name: data.name || '',
+              email: data.email || '',
+              subject: data.subject || 'Website Contact',
+              message: data.message || ''
+            })
+          });
+
+          if (res.ok) {
+            showResult(true, 'Message Sent!');
+          } else {
+            // If Formspree returns an error, fallback to mailto
+            console.warn('Formspree response not OK', res.status);
+            showResult(false, 'Failed to send via Formspree');
+          }
+        } else {
+          // No Formspree configured — fallback to opening user's mail client
+          const subject = encodeURIComponent(data.subject || 'Website Contact');
+          const body = encodeURIComponent(`Name: ${data.name || ''}\nEmail: ${data.email || ''}\n\n${data.message || ''}`);
+          const mailto = `mailto:work.parthsahni@gmail.com?subject=${subject}&body=${body}`;
+          // Open default mail client
+          window.location.href = mailto;
+          showResult(true, 'Opened mail client');
+        }
+      } catch (err) {
+        console.error('Contact form error:', err);
+        showResult(false, 'Failed to Send');
       }
     });
   }
