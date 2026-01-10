@@ -165,13 +165,13 @@ document.addEventListener('DOMContentLoaded', () => {
             showResult(false, 'Failed to send via Formspree');
           }
         } else {
-          // No Formspree configured — fallback to opening user's mail client
+          // No Formspree configured — open Gmail web compose to avoid opening Outlook desktop
           const subject = encodeURIComponent(data.subject || 'Website Contact');
           const body = encodeURIComponent(`Name: ${data.name || ''}\nEmail: ${data.email || ''}\n\n${data.message || ''}`);
-          const mailto = `mailto:work.parthsahni@gmail.com?subject=${subject}&body=${body}`;
-          // Open default mail client
-          window.location.href = mailto;
-          showResult(true, 'Opened mail client');
+          const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=work.parthsahni@gmail.com&su=${subject}&body=${body}`;
+          // Open Gmail compose in a new tab (user must be signed in)
+          window.open(gmailUrl, '_blank');
+          showResult(true, 'Opened Gmail compose');
         }
       } catch (err) {
         console.error('Contact form error:', err);
